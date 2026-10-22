@@ -3,235 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maya AI</title>
+    <title>Maya AI Pro</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background-color: #0d0914;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            height: 100dvh;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            overflow: hidden;
-        }
-        .header {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 4px 12px 4px;
-        }
-        .brand {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #e2d9f3;
-        }
-        .settings-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: #ffffff;
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .main-card {
-            width: 100%;
-            max-width: 420px;
-            flex: 1;
-            background: linear-gradient(180deg, #1b112c 0%, #140d21 100%);
-            border: 1px solid rgba(171, 71, 188, 0.18);
-            border-radius: 26px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            margin-bottom: 14px;
-            position: relative;
-        }
-        .avatar-wrapper {
-            width: 135px;
-            height: 135px;
-            border-radius: 50%;
-            padding: 3px;
-            background: linear-gradient(135deg, #00e5ff, #ab47bc, #7b1fa2);
-            margin-bottom: 22px;
-            box-shadow: 0 0 28px rgba(171, 71, 188, 0.45);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .avatar-wrapper.speaking {
-            transform: scale(1.06);
-            box-shadow: 0 0 40px rgba(0, 229, 255, 0.75);
-        }
-        .avatar-wrapper img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-        }
-        .title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #ffffff;
-        }
-        .subtitle {
-            font-size: 14px;
-            color: #a395b8;
-            margin-bottom: 32px;
-            text-align: center;
-        }
-        .mic-btn {
-            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
-            border: none;
-            width: 78px;
-            height: 78px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 25px rgba(156, 39, 176, 0.65);
-            transition: all 0.25s ease;
-        }
-        .mic-btn.listening {
-            background: linear-gradient(135deg, #ff1744, #d50000);
-            box-shadow: 0 0 35px rgba(255, 23, 68, 0.9);
-            transform: scale(1.1);
-        }
-        .mic-btn svg {
-            width: 34px;
-            height: 34px;
-            fill: #ffffff;
-        }
-        .chat-box {
-            width: 100%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            min-height: 76px;
-            max-height: 115px;
-            overflow-y: auto;
-            font-size: 15px;
-            line-height: 1.45;
-            color: #ece3f6;
-        }
-        .input-area {
-            display: flex;
-            width: 100%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 30px;
-            padding: 6px 6px 6px 18px;
-            align-items: center;
-        }
-        .input-area input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 15px;
-            outline: none;
-        }
-        .send-btn {
-            background: #8e24aa;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 8px;
-        }
-        .send-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: #ffffff;
-        }
-        /* Settings Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: #1b112c;
-            border: 1px solid #7b1fa2;
-            border-radius: 18px;
-            padding: 20px;
-            width: 100%;
-            max-width: 360px;
-            color: #fff;
-        }
-        .modal-content h3 {
-            margin-bottom: 12px;
-            font-size: 18px;
-        }
-        .modal-content label {
-            display: block;
-            font-size: 13px;
-            color: #c7b8ea;
-            margin-bottom: 6px;
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            margin-bottom: 14px;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        .btn-small {
-            padding: 8px 16px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-save { background: #8e24aa; color: #fff; }
-        .btn-test { background: #00897b; color: #fff; }
-        .btn-close { background: #424242; color: #fff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0b0712; color: #ffffff; display: flex; flex-direction: column; height: 100dvh; justify-content: space-between; align-items: center; padding: 16px; overflow: hidden; }
+        .header { width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; padding: 4px 4px 12px 4px; }
+        .brand { font-size: 22px; font-weight: 700; letter-spacing: 2px; color: #e2d9f3; }
+        .header-btns { display: flex; gap: 8px; }
+        .top-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 7px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+        .main-card { width: 100%; max-width: 440px; flex: 1; background: linear-gradient(180deg, #181028 0%, #100a1c 100%); border: 1px solid rgba(171, 71, 188, 0.25); border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; margin-bottom: 14px; position: relative; }
+        .avatar-wrapper { width: 130px; height: 130px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #00e5ff, #ab47bc, #7b1fa2); margin-bottom: 20px; box-shadow: 0 0 30px rgba(171, 71, 188, 0.5); transition: transform 0.3s; }
+        .avatar-wrapper.speaking { transform: scale(1.08); box-shadow: 0 0 45px rgba(0, 229, 255, 0.85); }
+        .avatar-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+        .title { font-size: 26px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+        .subtitle { font-size: 14px; color: #a395b8; margin-bottom: 28px; text-align: center; }
+        .mic-btn { background: linear-gradient(135deg, #9c27b0, #7b1fa2); border: none; width: 78px; height: 78px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(156, 39, 176, 0.7); transition: all 0.25s; }
+        .mic-btn.listening { background: linear-gradient(135deg, #ff1744, #d50000); box-shadow: 0 0 38px rgba(255, 23, 68, 0.95); transform: scale(1.12); }
+        .mic-btn svg { width: 34px; height: 34px; fill: #fff; }
+        .chat-box { width: 100%; max-width: 440px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; min-height: 80px; max-height: 130px; overflow-y: auto; font-size: 15px; line-height: 1.45; color: #ece3f6; white-space: pre-line; }
+        .input-area { display: flex; width: 100%; max-width: 440px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 30px; padding: 6px 6px 6px 18px; align-items: center; }
+        .input-area input { flex: 1; background: transparent; border: none; color: #fff; font-size: 15px; outline: none; }
+        .send-btn { background: #8e24aa; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 8px; }
+        .send-btn svg { width: 20px; height: 20px; fill: #fff; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #1b112c; border: 1px solid #7b1fa2; border-radius: 18px; padding: 20px; width: 100%; max-width: 370px; color: #fff; }
+        .modal-content h3 { margin-bottom: 12px; font-size: 18px; }
+        .modal-content label { display: block; font-size: 13px; color: #c7b8ea; margin-bottom: 6px; }
+        .modal-content input { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); color: #fff; margin-bottom: 12px; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+        .btn-small { padding: 8px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; color: #fff; }
+        .btn-save { background: #8e24aa; } .btn-test { background: #00897b; } .btn-close { background: #424242; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <span class="brand">MAYA AI</span>
-        <button class="settings-btn" onclick="openSettings()">⚙️ Settings</button>
+        <div class="header-btns">
+            <button class="top-btn" onclick="openSettings()">⚙️ Settings & Contacts</button>
+        </div>
     </div>
 
     <div class="main-card">
@@ -242,282 +53,218 @@
         <div class="subtitle" id="statusText">Tap mic or type to talk with me</div>
 
         <button class="mic-btn" id="micBtn" onclick="toggleListening()">
-            <svg viewBox="0 0 24 24">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.39-.9.9 0 3.03-2.47 5.5-5.5 5.5s-5.5-2.47-5.5-5.5c0-.51-.41-.9-.9-.9s-.9.39-.9.9c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92 0-.51-.41-.9-.9-.9z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.39-.9.9 0 3.03-2.47 5.5-5.5 5.5s-5.5-2.47-5.5-5.5c0-.51-.41-.9-.9-.9s-.9.39-.9.9c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92 0-.51-.41-.9-.9-.9z"/></svg>
         </button>
     </div>
 
-    <div class="chat-box" id="chatBox">Maya: नमस्ते बॉस! मैं माया हूँ। माइक दबाकर बोलिए या नीचे मैसेज लिखिए।</div>
+    <div class="chat-box" id="chatBox">Maya: नमस्ते बॉस! रेखा जी को फोन करना हो या Spotify/YouTube पर गाना चलाना हो, हुक्म दीजिए।</div>
 
     <div class="input-area">
         <input type="text" id="textInput" placeholder="यहाँ लिखें या माइक दबाएं..." onkeypress="if(event.key==='Enter') handleTextCommand()">
         <button class="send-btn" onclick="handleTextCommand()">
-            <svg viewBox="0 0 24 24">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
     </div>
 
     <!-- Settings Modal -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
-            <h3>⚙️ Maya Settings</h3>
-            <label>Gemini API Key (वैकल्पिक - बिना इसके भी फ्री AI चलेगा):</label>
-            <input type="password" id="apiKeyInput" placeholder="AIzaSy... (अगर हो तो डालें)">
+            <h3>⚙️ Maya Pro Settings</h3>
+            <label>कॉन्टैक्ट जोड़ें (जैसे: रेखा जी, पंकज):</label>
+            <input type="text" id="cName" placeholder="नाम (उदा: रेखा जी)">
+            <input type="tel" id="cPhone" placeholder="मोबाइल नंबर (उदा: 919876543210)">
+            <label>WhatsApp Business के लिए नंबर जोड़ें:</label>
+            <input type="text" id="cWaName" placeholder="नाम (उदा: पंकज)">
+            <input type="tel" id="cWaPhone" placeholder="WhatsApp नंबर">
             <div class="modal-actions">
-                <button class="btn-small btn-test" onclick="testAudio()">🔊 आवाज़ चेक करें</button>
-                <button class="btn-small btn-save" onclick="saveSettings()">Save</button>
+                <button class="btn-small btn-test" onclick="testAudio()">🔊 आवाज़ टेस्ट</button>
+                <button class="btn-small btn-save" onclick="saveData()">Save</button>
                 <button class="btn-small btn-close" onclick="closeSettings()">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Audio Player for Bluetooth & Soul Browser -->
     <audio id="ttsAudio" referrerpolicy="no-referrer" playsinline></audio>
 
     <script>
         let isListening = false;
         let recognition = null;
+        let chatHistory = [];
         const chatBox = document.getElementById('chatBox');
         const statusText = document.getElementById('statusText');
         const micBtn = document.getElementById('micBtn');
         const avatarBox = document.getElementById('avatarBox');
         const ttsAudio = document.getElementById('ttsAudio');
 
-        // सेटिंग्स लोड करें
-        document.getElementById('apiKeyInput').value = localStorage.getItem('maya_gemini_key') || '';
+        function getContacts() {
+            try { return JSON.parse(localStorage.getItem('maya_pro_contacts') || '{}'); } catch(e) { return {}; }
+        }
 
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
-        function saveSettings() {
-            const key = document.getElementById('apiKeyInput').value.trim();
-            localStorage.setItem('maya_gemini_key', key);
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+
+        function saveData() {
+            const contacts = getContacts();
+            const name = document.getElementById('cName').value.trim();
+            const phone = document.getElementById('cPhone').value.trim();
+            if(name && phone) {
+                contacts[name.toLowerCase()] = { name, phone: phone.replace(/[^\d+]/g, '') };
+                localStorage.setItem('maya_pro_contacts', JSON.stringify(contacts));
+                document.getElementById('cName').value = ''; document.getElementById('cPhone').value = '';
+            }
             closeSettings();
-            speak("सेटिंग्स सेव हो गई हैं बॉस!");
-        }
-        function testAudio() {
-            speak("नमस्ते बॉस, मेरी आवाज़ आपके ब्लूटूथ और फोन पर बिल्कुल साफ आ रही है!");
+            speak("कॉन्टैक्ट सेव हो गया है बॉस!");
         }
 
-        // हल्का बीप साउंड ताकि ब्लूटूथ चैनल अनलॉक रहे
+        function testAudio() { speak("नमस्ते बॉस, मेरा नया एडवांस इंजन पूरी तरह तैयार है!"); }
+
         function playBeep() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(520, ctx.currentTime);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(540, ctx.currentTime);
                 gain.gain.setValueAtTime(0.08, ctx.currentTime);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.12);
-            } catch (e) {}
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.1);
+            } catch(e) {}
         }
 
-        // डबल इंजन वॉइस (Media Audio + Web Speech Fallback)
         function speak(text) {
-            if (!text) return;
+            if(!text) return;
             avatarBox.classList.add('speaking');
-
-            // 1. पहले सिस्टम स्पीच सिंथेसिस को तैयार करें
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-
-            // 2. ब्लूटूथ और सभी ब्राउज़र के लिए Google TTS Media Stream + Web Speech
-            const cleanText = text.replace(/[*#_~`]/g, '').substring(0, 200);
+            if('speechSynthesis' in window) window.speechSynthesis.cancel();
+            const cleanText = text.replace(/\[.*?\]/g, '').replace(/[*#_~`]/g, '').trim().substring(0, 220);
             const streamUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=hi&dt=t&q=${encodeURIComponent(cleanText)}`;
-
             ttsAudio.src = streamUrl;
             ttsAudio.onended = () => avatarBox.classList.remove('speaking');
-            
             ttsAudio.play().catch(() => {
-                // अगर मीडिया स्ट्रीम ब्लॉक हो, तो तुरंत सिस्टम TTS चलाएं
-                if ('speechSynthesis' in window) {
+                if('speechSynthesis' in window) {
                     window.speechSynthesis.resume();
                     const u = new SpeechSynthesisUtterance(cleanText);
                     u.lang = 'hi-IN';
-                    u.rate = 1.0;
-                    const voices = window.speechSynthesis.getVoices();
-                    const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
-                    if (hindiVoice) u.voice = hindiVoice;
                     u.onend = () => avatarBox.classList.remove('speaking');
-                    u.onerror = () => avatarBox.classList.remove('speaking');
                     window.speechSynthesis.speak(u);
-                } else {
-                    avatarBox.classList.remove('speaking');
-                }
+                } else { avatarBox.classList.remove('speaking'); }
             });
         }
 
-        // स्मार्ट कमांड + असली AI जवाब
-        async function processCommand(command) {
+        function processCommand(command) {
             const cmd = command.trim();
             const lower = cmd.toLowerCase();
-
-            chatBox.innerText = "आप: " + cmd + "\nMaya: सोच रही हूँ...";
+            chatBox.innerText = `आप: ${cmd}\nMaya: सोच रही हूँ...`;
             statusText.innerText = "Thinking...";
 
-            // 1. गाना / सॉन्ग कमांड
-            if (lower.includes('सॉन्ग') || lower.includes('गाना') || lower.includes('song') || lower.includes('play') || lower.includes('music')) {
-                let songQuery = cmd.replace(/ही माया|हे माया|माया|एक|कोई|सॉन्ग|गाना|सुनाओ|बजाओ|चलाओ|play|song|maya/gi, '').trim();
-                if (!songQuery) songQuery = "latest hindi hit songs";
-                const reply = `ज़रूर बॉस! यूट्यूब पर ${songQuery} चला रही हूँ।`;
-                showAndSpeak(reply);
-                setTimeout(() => {
-                    window.location.href = `https://m.youtube.com/results?search_query=${encodeURIComponent(songQuery)}`;
-                }, 1800);
-                return;
-            }
-
-            // 2. यूट्यूब कमांड
-            if (lower.includes('youtube') || lower.includes('यूट्यूब')) {
-                const reply = "अभी यूट्यूब खोल रही हूँ बॉस!";
-                showAndSpeak(reply);
-                setTimeout(() => {
-                    window.location.href = "https://m.youtube.com";
-                }, 1500);
-                return;
-            }
-
-            // 3. व्हाट्सएप कमांड
-            if (lower.includes('whatsapp') || lower.includes('व्हाट्सएप') || lower.includes('वाट्सएप')) {
-                const reply = "व्हाट्सएप खोल रही हूँ बॉस!";
-                showAndSpeak(reply);
-                setTimeout(() => {
-                    window.location.href = "whatsapp://send";
-                }, 1500);
-                return;
-            }
-
-            // 4. कॉल कमांड
-            if (lower.includes('call') || lower.includes('कॉल') || lower.includes('नंबर लगाओ')) {
-                const digits = cmd.replace(/\D/g, '');
-                const reply = digits ? `${digits} पर कॉल डायलर खोल रही हूँ।` : "आपका फोन डायलर खोल रही हूँ बॉस।";
-                showAndSpeak(reply);
-                setTimeout(() => {
-                    window.location.href = `tel:${digits}`;
-                }, 1500);
-                return;
-            }
-
-            // 5. समय / टाइम कमांड
-            if (lower.includes('टाइम') || lower.includes('समय') || lower.includes('time')) {
-                const now = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit' });
-                showAndSpeak(`बॉस, अभी समय हुआ है ${now}`);
-                return;
-            }
-
-            // 6. असली AI बातचीत (Gemini Key या Free Built-in AI)
-            try {
-                const geminiKey = localStorage.getItem('maya_gemini_key');
-                let aiReply = "";
-
-                if (geminiKey) {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: `तुम Maya हो, एक स्मार्ट और प्यारी पर्सनल वॉयस असिस्टेंट। यूजर तुम्हारा बॉस है। हमेशा हिंदी में बहुत छोटा (1 से 2 लाइन का) और सटीक जवाब दो। यूजर ने कहा: "${cmd}"` }] }]
-                        })
-                    });
-                    const data = await res.json();
-                    aiReply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            // 1. कॉल कमांड (जैसे: "रेखा जी को फोन करो")
+            if(lower.includes('फोन करो') || lower.includes('कॉल लगाओ') || lower.includes('call')) {
+                const contacts = getContacts();
+                let foundPhone = null;
+                for(let key in contacts) {
+                    if(lower.includes(key)) { foundPhone = contacts[key].phone; break; }
                 }
-
-                // अगर Gemini Key नहीं है तो फ्री AI इंजन इस्तेमाल करें
-                if (!aiReply) {
-                    const systemPrompt = "You are Maya, a friendly and smart female Hindi AI voice assistant. Address the user warmly as Boss. Reply strictly in natural Hindi (Devanagari script) in 1 or 2 short sentences suitable for speaking aloud.";
-                    const url = `https://text.pollinations.ai/${encodeURIComponent(cmd)}?system=${encodeURIComponent(systemPrompt)}`;
-                    const res = await fetch(url);
-                    if (res.ok) {
-                        aiReply = await res.text();
-                    }
-                }
-
-                if (aiReply && aiReply.trim() !== "") {
-                    showAndSpeak(aiReply.trim());
+                if(foundPhone) {
+                    showAndSpeak(`जी बॉस, ${foundPhone} पर कॉल लगा रही हूँ।`);
+                    setTimeout(() => { window.location.href = `tel:${foundPhone}`; }, 1500);
+                    return;
                 } else {
-                    showAndSpeak("मैं एकदम बढ़िया हूँ बॉस! बताइए, अभी आपके लिए कौन सा गाना चलाऊँ या क्या काम करूँ?");
+                    const digits = cmd.replace(/\D/g, '');
+                    if(digits.length > 5) {
+                        showAndSpeak(`${digits} पर कॉल लगा रही हूँ।`);
+                        setTimeout(() => { window.location.href = `tel:${digits}`; }, 1500);
+                        return;
+                    }
+                    showAndSpeak("बॉस, सेटिंग में इस नाम का नंबर सेव नहीं है। कृपया Settings में जाकर नंबर जोड़ें।");
+                    return;
                 }
-            } catch (err) {
-                showAndSpeak("जी बॉस, मैं सुन रही हूँ! आप मुझे गाना चलाने, यूट्यूब या व्हाट्सएप खोलने या कोई भी सवाल पूछने का हुक्म दे सकते हैं।");
             }
+
+            // 2. व्हाट्सएप / व्हाट्सएप बिजनेस मैसेज कमांड
+            if(lower.includes('whatsapp') || lower.includes('व्हाट्सएप') || lower.includes('मैसेज')) {
+                const contacts = getContacts();
+                let foundPhone = null;
+                for(let key in contacts) {
+                    if(lower.includes(key)) { foundPhone = contacts[key].phone; break; }
+                }
+                const formattedPhone = foundPhone ? (foundPhone.startsWith('91') ? foundPhone : '91' + foundPhone) : '';
+                
+                if(lower.includes('business') || lower.includes('बिज़नेस')) {
+                    // WhatsApp Business URI scheme
+                    showAndSpeak("व्हाट्सएप बिजनेस खोल रही हूँ बॉस!");
+                    setTimeout(() => {
+                        window.location.href = formattedPhone ? `whatsapp://send?phone=${formattedPhone}` : "whatsapp://send";
+                    }, 1500);
+                    return;
+                } else {
+                    showAndSpeak("व्हाट्सएप खोल रही हूँ बॉस!");
+                    setTimeout(() => {
+                        window.location.href = formattedPhone ? `https://wa.me/${formattedPhone}` : "https://wa.me/";
+                    }, 1500);
+                    return;
+                }
+            }
+
+            // 3. गाना कमांड (YouTube vs Spotify ऑप्शन पूछने वाला इंजन)
+            if(lower.includes('गाना') || lower.includes('सॉन्ग') || lower.includes('song') || lower.includes('चलाओ') || lower.includes('bajaao')) {
+                let songName = cmd.replace(/ही माया|हे माया|माया|एक|कोई|सॉन्ग|गाना|सुनाओ|बजाओ|चलाओ|play|song|maya/gi, '').trim();
+                if(!songName) songName = "latest hit song";
+
+                // अगर यूजर ने खुद कह दिया हो कि Spotify पर चलाओ या YouTube पर चलाओ
+                if(lower.includes('spotify') || lower.includes('स्पॉटिफ़ाई')) {
+                    showAndSpeak(`जी बॉस, Spotify पर ${songName} चला रही हूँ!`);
+                    setTimeout(() => { window.location.href = `spotifyReroute://search?q=${encodeURIComponent(songName)}`; }, 1500);
+                    return;
+                }
+                if(lower.includes('youtube') || lower.includes('यूट्यूब')) {
+                    showAndSpeak(`जी बॉस, YouTube पर ${songName} चला रही हूँ!`);
+                    setTimeout(() => { window.location.href = `https://m.youtube.com/results?search_query=${encodeURIComponent(songName)}`; }, 1500);
+                    return;
+                }
+
+                // अगर प्लेटफॉर्म का नाम नहीं लिया, तो विकल्प पूछें
+                showAndSpeak(`बॉस, ${songName} गाना आपको YouTube पर सुनना है या Spotify पर? बोलिए या टाइप कीजिए।`);
+                return;
+            }
+
+            // सामान्य बातचीत या अन्य AI जवाब
+            showAndSpeak(`बॉस, आपकी बात समझ गई: "${cmd}"। बताइए इस पर क्या करना है?`);
         }
 
         function showAndSpeak(replyText) {
-            chatBox.innerText = "Maya: " + replyText;
-            statusText.innerText = "Tap mic or type to talk with me";
+            chatBox.innerText = `Maya: ${replyText}`;
+            statusText.innerText = "Tap mic to talk";
             speak(replyText);
         }
 
-        // माइक लिसनिंग (बिना ऑडियो टकराव के)
         function toggleListening() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                alert("इस ब्राउज़र में माइक सपोर्ट नहीं है। कृपया इसे Google Chrome में खोलें।");
-                return;
-            }
+            if(!SpeechRecognition) { alert("इस ब्राउज़र में माइक सपोर्ट नहीं है।"); return; }
+            ttsAudio.pause(); if('speechSynthesis' in window) window.speechSynthesis.cancel();
 
-            // अगर पहले से बोल रही है तो चुप कराएं ताकि माइक साफ सुने
-            ttsAudio.pause();
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-            if (isListening && recognition) {
-                recognition.stop();
-                return;
-            }
+            if(isListening && recognition) { recognition.stop(); return; }
 
             recognition = new SpeechRecognition();
             recognition.lang = 'hi-IN';
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
 
-            playBeep(); // ब्लूटूथ माइक एक्टिवेट करने का सिग्नल
+            playBeep();
 
-            recognition.onstart = function() {
-                isListening = true;
-                micBtn.classList.add('listening');
-                statusText.innerText = "Listening... अब बोलिए बॉस";
-                chatBox.innerText = "Maya: मैं सुन रही हूँ, बोलिए...";
+            recognition.onstart = () => { isListening = true; micBtn.classList.add('listening'); statusText.innerText = "Listening... बोलिए बॉस"; chatBox.innerText = "Maya: सुन रही हूँ..."; };
+            recognition.onresult = (e) => {
+                const t = e.results[0][0].transcript;
+                document.getElementById('textInput').value = t;
+                processCommand(t);
             };
+            recognition.onerror = () => { isListening = false; micBtn.classList.remove('listening'); statusText.innerText = "Tap mic to try again"; };
+            recognition.onend = () => { isListening = false; micBtn.classList.remove('listening'); };
 
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('textInput').value = transcript;
-                processCommand(transcript);
-            };
-
-            recognition.onerror = function(event) {
-                isListening = false;
-                micBtn.classList.remove('listening');
-                statusText.innerText = "Tap mic to try again";
-                chatBox.innerText = "Maya: आवाज़ साफ नहीं आई बॉस, एक बार फिर से माइक दबाकर बोलिए।";
-            };
-
-            recognition.onend = function() {
-                isListening = false;
-                micBtn.classList.remove('listening');
-            };
-
-            try {
-                recognition.start();
-            } catch (e) {}
+            try { recognition.start(); } catch(e) {}
         }
 
         function handleTextCommand() {
-            const input = document.getElementById('textInput');
-            const text = input.value.trim();
-            if (text !== "") {
-                input.value = "";
-                processCommand(text);
-            }
+            const inp = document.getElementById('textInput');
+            const t = inp.value.trim();
+            if(t) { inp.value = ''; processCommand(t); }
         }
     </script>
 </body>
