@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maya AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0f0c1b;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            height: 100dvh;
+            padding: 15px;
+            overflow: hidden;
+        }
+        .header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #d1c4e9;
+            margin-top: 5px;
+        }
+        .main-container {
+            background: linear-gradient(135deg, #1f1635, #120c22);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #bb86fc, #03dac6);
+            margin-bottom: 15px;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 0.85rem;
+            color: #b0bec5;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .mic-button {
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            border: none;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(156, 39, 176, 0.5);
+            outline: none;
+        }
+        .mic-button:active {
+            transform: scale(0.92);
+        }
+        .mic-icon {
+            width: 32px;
+            height: 32px;
+            fill: #ffffff;
+        }
+        .chat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+            max-width: 450px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            min-height: 50px;
+        }
+        .input-container {
+            display: flex;
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            border-radius: 30px;
+            padding: 6px 12px;
+            align-items: center;
+        }
+        .text-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 0.95rem;
+            padding: 8px;
+        }
+        .text-input::placeholder {
+            color: #9e9e9e;
+        }
+        .send-button {
+            background: #9c27b0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            outline: none;
+        }
+        .send-icon {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">MAYA AI</div>
+
+    <div class="main-container">
+        <div class="avatar-container">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Maya Avatar" class="avatar">
+        </div>
+        <div class="title">Hi, I'm Maya</div>
+        <div class="subtitle">Tap mic or type to talk with me</div>
+
+        <button class="mic-button" id="micBtn" type="button" aria-label="Microphone">
+            <svg class="mic-icon" viewBox="0 0 24 24">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="chat-box" id="responseBox">
+        Hello Boss! Main Maya hoon. Bataiye aaj kya madad karूं?
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="userInput" class="text-input" placeholder="Type a message...">
+        <button class="send-button" id="sendBtn" type="button" aria-label="Send">
+            <svg class="send-icon" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const userInput = document.getElementById('userInput');
+        const responseBox = document.getElementById('responseBox');
+
+        // Smart Reply Logic (बिना पुरानी गलती के)
+        function handleMessage(text) {
+            let lower = text.toLowerCase();
+            let reply = "Maya: Maine aapki baat sun li hai. Main ispar kaam kar rahi hoon!";
+
+            if (lower.includes('kaise ho') || lower.includes('kaisi ho')) {
+                reply = "Maya: Main ekdum badiya hoon Boss! Aap bataiye.";
+            } else if (lower.includes('naam kya hai')) {
+                reply = "Maya: Mera naam Maya AI hai.";
+            } else if (text.trim() !== "") {
+                reply = "Maya: Aapne pucha -> '" + text + "'. Ekdum sahi sawal hai!";
+            }
+
+            responseBox.innerText = reply;
+            speak(reply);
+        }
+
+        // Send Button Click
+        sendBtn.addEventListener('click', function() {
+            let text = userInput.value.trim();
+            if(text !== "") {
+                handleMessage(text);
+                userInput.value = "";
+            } else {
+                responseBox.innerText = "Maya: Bhai pehle kuch type toh kariye!";
+            }
+        });
+
+        // Enter Key Support
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+
+        // Mic Click Simulation / Voice Input
+        micBtn.addEventListener('click', function() {
+            responseBox.innerText = "Maya: Sun rahi hoon, boliye kya kaam hai?";
+            speak("Sun rahi hoon, boliye kya kaam hai?");
+        });
+
+        // Text to Speech
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let clean = text.replace("Maya:", "").trim();
+                let utter = new SpeechSynthesisUtterance(clean);
+                utter.lang = 'hi-IN';
+                window.speechSynthesis.speak(utter);
+            }
+        }
+    </script>
+</body>
+</html>
