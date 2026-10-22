@@ -1,6 +1,6 @@
 {
-  "name": "Maya AI",
-  "short_name": "Maya",
+  "name": "Maya AI Pro",
+  "short_name": "Maya AI",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f0c1b",
