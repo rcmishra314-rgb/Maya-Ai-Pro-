@@ -2,241 +2,521 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maya AI Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maya AI</title>
     <link rel="manifest" href="manifest.json">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
-            background-color: #0f0c1b;
+            background-color: #0d0914;
             color: #ffffff;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 100dvh;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
+            overflow: hidden;
         }
         .header {
             width: 100%;
+            max-width: 420px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #d1c4e9;
+            padding: 4px 4px 12px 4px;
         }
-        .container {
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #e2d9f3;
+        }
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .main-card {
+            width: 100%;
+            max-width: 420px;
+            flex: 1;
+            background: linear-gradient(180deg, #1b112c 0%, #140d21 100%);
+            border: 1px solid rgba(171, 71, 188, 0.18);
+            border-radius: 26px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex: 1;
-            width: 100%;
-            max-width: 400px;
+            padding: 24px;
+            margin-bottom: 14px;
+            position: relative;
         }
-        .avatar-box {
-            width: 120px;
-            height: 120px;
+        .avatar-wrapper {
+            width: 135px;
+            height: 135px;
             border-radius: 50%;
-            border: 3px solid #ab47bc;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(171, 71, 188, 0.5);
+            padding: 3px;
+            background: linear-gradient(135deg, #00e5ff, #ab47bc, #7b1fa2);
+            margin-bottom: 22px;
+            box-shadow: 0 0 28px rgba(171, 71, 188, 0.45);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .avatar-box img {
+        .avatar-wrapper.speaking {
+            transform: scale(1.06);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.75);
+        }
+        .avatar-wrapper img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
+            display: block;
         }
         .title {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #ffffff;
         }
         .subtitle {
             font-size: 14px;
-            color: #b39ddb;
-            margin-bottom: 30px;
+            color: #a395b8;
+            margin-bottom: 32px;
             text-align: center;
         }
         .mic-btn {
-            background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
             border: none;
-            width: 80px;
-            height: 80px;
+            width: 78px;
+            height: 78px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(123, 31, 162, 0.6);
-            transition: transform 0.2s;
+            box-shadow: 0 0 25px rgba(156, 39, 176, 0.65);
+            transition: all 0.25s ease;
         }
-        .mic-btn:active {
-            transform: scale(0.95);
+        .mic-btn.listening {
+            background: linear-gradient(135deg, #ff1744, #d50000);
+            box-shadow: 0 0 35px rgba(255, 23, 68, 0.9);
+            transform: scale(1.1);
         }
         .mic-btn svg {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             fill: #ffffff;
         }
         .chat-box {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 15px;
-            min-height: 60px;
-            max-height: 120px;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            min-height: 76px;
+            max-height: 115px;
             overflow-y: auto;
-            font-size: 14px;
-            color: #e1bee7;
+            font-size: 15px;
+            line-height: 1.45;
+            color: #ece3f6;
         }
         .input-area {
             display: flex;
             width: 100%;
-            max-width: 400px;
-            gap: 10px;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 30px;
+            padding: 6px 6px 6px 18px;
+            align-items: center;
         }
         .input-area input {
             flex: 1;
-            padding: 12px 16px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.07);
-            color: #fff;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
             outline: none;
         }
-        .input-area button {
-            background: #7b1fa2;
+        .send-btn {
+            background: #8e24aa;
             border: none;
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-left: 8px;
         }
-        .input-area button svg {
+        .send-btn svg {
             width: 20px;
             height: 20px;
-            fill: #fff;
+            fill: #ffffff;
         }
+        /* Settings Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #1b112c;
+            border: 1px solid #7b1fa2;
+            border-radius: 18px;
+            padding: 20px;
+            width: 100%;
+            max-width: 360px;
+            color: #fff;
+        }
+        .modal-content h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .modal-content label {
+            display: block;
+            font-size: 13px;
+            color: #c7b8ea;
+            margin-bottom: 6px;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            margin-bottom: 14px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-save { background: #8e24aa; color: #fff; }
+        .btn-test { background: #00897b; color: #fff; }
+        .btn-close { background: #424242; color: #fff; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <span>MAYA AI PRO (Bluetooth Ready)</span>
+        <span class="brand">MAYA AI</span>
+        <button class="settings-btn" onclick="openSettings()">⚙️ Settings</button>
     </div>
 
-    <div class="container">
-        <div class="avatar-box">
+    <div class="main-card">
+        <div class="avatar-wrapper" id="avatarBox">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Maya Avatar">
         </div>
         <div class="title">Hi, I'm Maya</div>
-        <div class="subtitle">Bluetooth mode active. Tap mic to speak.</div>
+        <div class="subtitle" id="statusText">Tap mic or type to talk with me</div>
 
-        <button class="mic-btn" id="micBtn" onclick="startListening()">
+        <button class="mic-btn" id="micBtn" onclick="toggleListening()">
             <svg viewBox="0 0 24 24">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.39-.9.9 0 3.03-2.47 5.5-5.5 5.5s-5.5-2.47-5.5-5.5c0-.51-.41-.9-.9-9s-.9.39-.9.9c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92 0-.51-.41-.9-.9-.9z"/>
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.39-.9.9 0 3.03-2.47 5.5-5.5 5.5s-5.5-2.47-5.5-5.5c0-.51-.41-.9-.9-.9s-.9.39-.9.9c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92 0-.51-.41-.9-.9-.9z"/>
             </svg>
         </button>
     </div>
 
-    <div class="chat-box" id="chatBox">Maya: Bluetooth connected. Main sun rahi hoon!</div>
+    <div class="chat-box" id="chatBox">Maya: नमस्ते बॉस! मैं माया हूँ। माइक दबाकर बोलिए या नीचे मैसेज लिखिए।</div>
 
     <div class="input-area">
-        <input type="text" id="textInput" placeholder="Type a message...">
-        <button onclick="handleTextCommand()">
+        <input type="text" id="textInput" placeholder="यहाँ लिखें या माइक दबाएं..." onkeypress="if(event.key==='Enter') handleTextCommand()">
+        <button class="send-btn" onclick="handleTextCommand()">
             <svg viewBox="0 0 24 24">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
             </svg>
         </button>
     </div>
 
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h3>⚙️ Maya Settings</h3>
+            <label>Gemini API Key (वैकल्पिक - बिना इसके भी फ्री AI चलेगा):</label>
+            <input type="password" id="apiKeyInput" placeholder="AIzaSy... (अगर हो तो डालें)">
+            <div class="modal-actions">
+                <button class="btn-small btn-test" onclick="testAudio()">🔊 आवाज़ चेक करें</button>
+                <button class="btn-small btn-save" onclick="saveSettings()">Save</button>
+                <button class="btn-small btn-close" onclick="closeSettings()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Player for Bluetooth & Soul Browser -->
+    <audio id="ttsAudio" referrerpolicy="no-referrer" playsinline></audio>
+
     <script>
+        let isListening = false;
+        let recognition = null;
+        const chatBox = document.getElementById('chatBox');
+        const statusText = document.getElementById('statusText');
+        const micBtn = document.getElementById('micBtn');
+        const avatarBox = document.getElementById('avatarBox');
+        const ttsAudio = document.getElementById('ttsAudio');
+
+        // सेटिंग्स लोड करें
+        document.getElementById('apiKeyInput').value = localStorage.getItem('maya_gemini_key') || '';
+
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+        function saveSettings() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            localStorage.setItem('maya_gemini_key', key);
+            closeSettings();
+            speak("सेटिंग्स सेव हो गई हैं बॉस!");
+        }
+        function testAudio() {
+            speak("नमस्ते बॉस, मेरी आवाज़ आपके ब्लूटूथ और फोन पर बिल्कुल साफ आ रही है!");
+        }
+
+        // हल्का बीप साउंड ताकि ब्लूटूथ चैनल अनलॉक रहे
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(520, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.12);
+            } catch (e) {}
+        }
+
+        // डबल इंजन वॉइस (Media Audio + Web Speech Fallback)
         function speak(text) {
+            if (!text) return;
+            avatarBox.classList.add('speaking');
+
+            // 1. पहले सिस्टम स्पीच सिंथेसिस को तैयार करें
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'hi-IN';
-                utterance.rate = 1.0;
-                // यह सुनिश्चित करता है कि ब्लूटूथ इयरफोन पर आवाज साफ सुनाई दे
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        function processCommand(command) {
-            const lowerCmd = command.toLowerCase();
-            let responseText = "Main aapki baat samajh gayi, Boss!";
-
-            if (lowerCmd.includes('youtube') || lowerCmd.includes('yuvtube')) {
-                responseText = "Youtube khol rahi hoon.";
-                speak(responseText);
-                window.open('https://www.youtube.com', '_blank');
-            } else if (lowerCmd.includes('whatsapp')) {
-                responseText = "WhatsApp khol rahi hoon.";
-                speak(responseText);
-                window.open('https://wa.me/', '_blank');
-            } else if (lowerCmd.includes('call')) {
-                responseText = "Dialer khol rahi hoon.";
-                speak(responseText);
-                window.open('tel:', '_blank');
-            } else {
-                responseText = "Aapne kaha: " + command + ". Aur bataiye, bluetooth par kya madad karun?";
-                speak(responseText);
             }
 
-            document.getElementById('chatBox').innerText = "Maya: " + responseText;
+            // 2. ब्लूटूथ और सभी ब्राउज़र के लिए Google TTS Media Stream + Web Speech
+            const cleanText = text.replace(/[*#_~`]/g, '').substring(0, 200);
+            const streamUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=hi&dt=t&q=${encodeURIComponent(cleanText)}`;
+
+            ttsAudio.src = streamUrl;
+            ttsAudio.onended = () => avatarBox.classList.remove('speaking');
+            
+            ttsAudio.play().catch(() => {
+                // अगर मीडिया स्ट्रीम ब्लॉक हो, तो तुरंत सिस्टम TTS चलाएं
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.resume();
+                    const u = new SpeechSynthesisUtterance(cleanText);
+                    u.lang = 'hi-IN';
+                    u.rate = 1.0;
+                    const voices = window.speechSynthesis.getVoices();
+                    const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
+                    if (hindiVoice) u.voice = hindiVoice;
+                    u.onend = () => avatarBox.classList.remove('speaking');
+                    u.onerror = () => avatarBox.classList.remove('speaking');
+                    window.speechSynthesis.speak(u);
+                } else {
+                    avatarBox.classList.remove('speaking');
+                }
+            });
         }
 
-        function startListening() {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert("Aapka browser voice recognition support nahi karta.");
+        // स्मार्ट कमांड + असली AI जवाब
+        async function processCommand(command) {
+            const cmd = command.trim();
+            const lower = cmd.toLowerCase();
+
+            chatBox.innerText = "आप: " + cmd + "\nMaya: सोच रही हूँ...";
+            statusText.innerText = "Thinking...";
+
+            // 1. गाना / सॉन्ग कमांड
+            if (lower.includes('सॉन्ग') || lower.includes('गाना') || lower.includes('song') || lower.includes('play') || lower.includes('music')) {
+                let songQuery = cmd.replace(/ही माया|हे माया|माया|एक|कोई|सॉन्ग|गाना|सुनाओ|बजाओ|चलाओ|play|song|maya/gi, '').trim();
+                if (!songQuery) songQuery = "latest hindi hit songs";
+                const reply = `ज़रूर बॉस! यूट्यूब पर ${songQuery} चला रही हूँ।`;
+                showAndSpeak(reply);
+                setTimeout(() => {
+                    window.location.href = `https://m.youtube.com/results?search_query=${encodeURIComponent(songQuery)}`;
+                }, 1800);
                 return;
             }
 
+            // 2. यूट्यूब कमांड
+            if (lower.includes('youtube') || lower.includes('यूट्यूब')) {
+                const reply = "अभी यूट्यूब खोल रही हूँ बॉस!";
+                showAndSpeak(reply);
+                setTimeout(() => {
+                    window.location.href = "https://m.youtube.com";
+                }, 1500);
+                return;
+            }
+
+            // 3. व्हाट्सएप कमांड
+            if (lower.includes('whatsapp') || lower.includes('व्हाट्सएप') || lower.includes('वाट्सएप')) {
+                const reply = "व्हाट्सएप खोल रही हूँ बॉस!";
+                showAndSpeak(reply);
+                setTimeout(() => {
+                    window.location.href = "whatsapp://send";
+                }, 1500);
+                return;
+            }
+
+            // 4. कॉल कमांड
+            if (lower.includes('call') || lower.includes('कॉल') || lower.includes('नंबर लगाओ')) {
+                const digits = cmd.replace(/\D/g, '');
+                const reply = digits ? `${digits} पर कॉल डायलर खोल रही हूँ।` : "आपका फोन डायलर खोल रही हूँ बॉस।";
+                showAndSpeak(reply);
+                setTimeout(() => {
+                    window.location.href = `tel:${digits}`;
+                }, 1500);
+                return;
+            }
+
+            // 5. समय / टाइम कमांड
+            if (lower.includes('टाइम') || lower.includes('समय') || lower.includes('time')) {
+                const now = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit' });
+                showAndSpeak(`बॉस, अभी समय हुआ है ${now}`);
+                return;
+            }
+
+            // 6. असली AI बातचीत (Gemini Key या Free Built-in AI)
+            try {
+                const geminiKey = localStorage.getItem('maya_gemini_key');
+                let aiReply = "";
+
+                if (geminiKey) {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: `तुम Maya हो, एक स्मार्ट और प्यारी पर्सनल वॉयस असिस्टेंट। यूजर तुम्हारा बॉस है। हमेशा हिंदी में बहुत छोटा (1 से 2 लाइन का) और सटीक जवाब दो। यूजर ने कहा: "${cmd}"` }] }]
+                        })
+                    });
+                    const data = await res.json();
+                    aiReply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                }
+
+                // अगर Gemini Key नहीं है तो फ्री AI इंजन इस्तेमाल करें
+                if (!aiReply) {
+                    const systemPrompt = "You are Maya, a friendly and smart female Hindi AI voice assistant. Address the user warmly as Boss. Reply strictly in natural Hindi (Devanagari script) in 1 or 2 short sentences suitable for speaking aloud.";
+                    const url = `https://text.pollinations.ai/${encodeURIComponent(cmd)}?system=${encodeURIComponent(systemPrompt)}`;
+                    const res = await fetch(url);
+                    if (res.ok) {
+                        aiReply = await res.text();
+                    }
+                }
+
+                if (aiReply && aiReply.trim() !== "") {
+                    showAndSpeak(aiReply.trim());
+                } else {
+                    showAndSpeak("मैं एकदम बढ़िया हूँ बॉस! बताइए, अभी आपके लिए कौन सा गाना चलाऊँ या क्या काम करूँ?");
+                }
+            } catch (err) {
+                showAndSpeak("जी बॉस, मैं सुन रही हूँ! आप मुझे गाना चलाने, यूट्यूब या व्हाट्सएप खोलने या कोई भी सवाल पूछने का हुक्म दे सकते हैं।");
+            }
+        }
+
+        function showAndSpeak(replyText) {
+            chatBox.innerText = "Maya: " + replyText;
+            statusText.innerText = "Tap mic or type to talk with me";
+            speak(replyText);
+        }
+
+        // माइक लिसनिंग (बिना ऑडियो टकराव के)
+        function toggleListening() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
+            if (!SpeechRecognition) {
+                alert("इस ब्राउज़र में माइक सपोर्ट नहीं है। कृपया इसे Google Chrome में खोलें।");
+                return;
+            }
+
+            // अगर पहले से बोल रही है तो चुप कराएं ताकि माइक साफ सुने
+            ttsAudio.pause();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+            if (isListening && recognition) {
+                recognition.stop();
+                return;
+            }
+
+            recognition = new SpeechRecognition();
             recognition.lang = 'hi-IN';
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
 
-            document.getElementById('chatBox').innerText = "Maya: Bluetooth mic active hai, boliye...";
-            speak("Boliye, sun rahi hoon!");
+            playBeep(); // ब्लूटूथ माइक एक्टिवेट करने का सिग्नल
 
-            try {
-                recognition.start();
-            } catch(e) {
-                console.log("Recognition error: ", e);
-            }
+            recognition.onstart = function() {
+                isListening = true;
+                micBtn.classList.add('listening');
+                statusText.innerText = "Listening... अब बोलिए बॉस";
+                chatBox.innerText = "Maya: मैं सुन रही हूँ, बोलिए...";
+            };
 
             recognition.onresult = function(event) {
-                const speechResult = event.results[0][0].transcript;
-                document.getElementById('textInput').value = speechResult;
-                processCommand(speechResult);
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('textInput').value = transcript;
+                processCommand(transcript);
             };
 
             recognition.onerror = function(event) {
-                document.getElementById('chatBox').innerText = "Maya: Awaz sunai nahi di, bluetooth mic check karein.";
+                isListening = false;
+                micBtn.classList.remove('listening');
+                statusText.innerText = "Tap mic to try again";
+                chatBox.innerText = "Maya: आवाज़ साफ नहीं आई बॉस, एक बार फिर से माइक दबाकर बोलिए।";
             };
+
+            recognition.onend = function() {
+                isListening = false;
+                micBtn.classList.remove('listening');
+            };
+
+            try {
+                recognition.start();
+            } catch (e) {}
         }
 
         function handleTextCommand() {
             const input = document.getElementById('textInput');
             const text = input.value.trim();
             if (text !== "") {
-                processCommand(text);
                 input.value = "";
+                processCommand(text);
             }
         }
     </script>
